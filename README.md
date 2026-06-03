@@ -69,7 +69,7 @@ Edit /etc/bind/conf/named.conf file
 ```bash
 nano /etc/bind/conf/named.conf
 ```
-edit config path:
+Edit config path and add rndc.key file:
 ```bash
 
 // This is the primary configuration file for the BIND DNS server named.
@@ -83,6 +83,7 @@ edit config path:
 include "/etc/bind/conf/named.conf.options";
 include "/etc/bind/conf/named.conf.local";
 include "/etc/bind/conf/named.conf.root-hints";
+include "/etc/bind/keys/rndc.key";
 ```
 
 Create simbolic link named.conf
