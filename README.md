@@ -435,3 +435,109 @@ zone 1.168.192.in-addr.arpa/IN: loaded serial 2026060301
 OK
 ```
 
+Create RPZ:
+```bash
+nano /etc/bind/zones/db.rpz.telemetry
+```
+
+```bash
+$TTL 86400
+@       IN      SOA     localhost. root.localhost. (
+                        2026060301 ; serial
+                        3600       ; refresh
+                        1800       ; retry
+                        604800     ; expire
+                        86400 )    ; minimum TTL
+
+        IN      NS      localhost.
+
+; --- Lista de telemetría a anular ---
+; Bloqueamos devolviendo un nombre que no existe (NXDOMAIN)
+telemetry.microsoft.com.    CNAME   .
+vortex.data.microsoft.com.  CNAME   .
+telemetry.google.com.       CNAME   .
+stats.g.doubleclick.net.    CNAME   .
+analytics.google.com.       CNAME   .
+```
+
+Declare Zone in named.conf.local
+
+
+```bash
+ nano /etc/bind/conf/named.conf.local
+```
+
+```bash
+//
+// Do any local configuration here
+//
+
+zone "lan" {
+        type master;
+        file "/etc/bind/zones/db.homelab.guide.org";
+};
+
+zone "1.168.192.in-addr.arpa" {
+        type master;
+        file "/etc/bind/zones/db.192.168.1.in-addr.arpa";
+};
+
+zone "rpz.telemetry" {
+    type master;
+    file "/etc/bind/zones/db.rpz.telemetry";
+    allow-query { none; };
+};
+```
+
+Active response policy in named.conf.options
+
+```bash
+nano named.conf.local nano /etc/bind/conf/named.conf.options
+```
+
+```bash
+options {
+        directory "/var/cache/bind";
+
+        recursion yes;
+        listen-on {
+                127.0.0.1;
+                192.168.1.10; # YOUR IP DNS SERVER
+        };
+
+        allow-query {
+                localhost;
+                192.168.1.0/24;
+        };
+
+        allow-recursion {
+                localhost;
+                192.168.1.0/24;
+        };
+
+        forwarders {
+                8.8.8.8;
+                8.8.4.4;
+        };
+
+
+        response-policy {
+        zone "rpz.telemetry";
+        };
+
+        dnssec-validation auto;
+
+        auth-nxdomain no;
+
+};
+```
+
+Check service
+```bash
+sudo named-checkconf
+```
+
+Restart service
+```bash
+sudo systemctl restart bind9
+```
