@@ -421,8 +421,17 @@ $TTL 86400
 sudo named-checkconf
 ```
 
-# Verifica cada zona
+# check dns zones:
+
 ```bash
-sudo named-checkzone homelab.guide.org /etc/bind/db.homelab.guide.org
-sudo named-checkzone 1.168.192.in-addr.arpa /etc/bind/db.192.168.1.in-addr.arpa
+named-checkzone homelab.guide.org /etc/bind/zones/db.homelab.guide.org
+zone homelab.guide.org/IN: loaded serial 2026060301
+OK
 ```
+
+```bash
+named-checkzone 1.168.192.in-addr.arpa /etc/bind/zones/db.192.168.1.in-addr.arpa
+zone 1.168.192.in-addr.arpa/IN: loaded serial 2026060301
+OK
+```
+
