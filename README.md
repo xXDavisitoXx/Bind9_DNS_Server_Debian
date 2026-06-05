@@ -443,15 +443,163 @@ nano /etc/bind/zones/db.rpz.telemetry
 ```bash
 $TTL 60
 @ IN SOA localhost. root.localhost. (
-        2026060301 3600 1800 604800 60 )
+        2026060502 ; Serial actualizado (YYYYMMDDNN)
+        3600       ; Refresh (1 hora)
+        1800       ; Retry (30 minutos)
+        604800     ; Expire (1 semana)
+        60 )       ; Minimum TTL
 
     IN NS localhost.
 
-telemetry.microsoft.com      CNAME   .
-vortex.data.microsoft.com    CNAME   .
-telemetry.google.com         CNAME   .
-stats.g.doubleclick.net      CNAME   .
-analytics.google.com         CNAME   .
+; ==============================================================================
+; 🌐 GLOBAL TELEMETRY BLACKHOLE - BIND RPZ (MASTER EDITION)
+; ==============================================================================
+
+; ------------------------------------------------------------------------------
+; 🪟 MICROSOFT / WINDOWS (OS, Office, Diagnósticos)
+; ------------------------------------------------------------------------------
+telemetry.microsoft.com                 CNAME   .
+vortex.data.microsoft.com               CNAME   .
+vortex-win.data.microsoft.com           CNAME   .
+settings-win.data.microsoft.com         CNAME   .
+oca.telemetry.microsoft.com             CNAME   .
+sqm.telemetry.microsoft.com             CNAME   .
+sqm.microsoft.com                       CNAME   .
+watson.telemetry.microsoft.com          CNAME   .
+watson.ppe.telemetry.microsoft.com      CNAME   .
+device.telemetry.microsoft.com          CNAME   .
+compatexchange.cloudapp.net             CNAME   .
+telecommand.telemetry.microsoft.com     CNAME   .
+wes.df.telemetry.microsoft.com          CNAME   .
+diagnostics.support.microsoft.com       CNAME   .
+events.data.microsoft.com               CNAME   .
+*.events.data.microsoft.com             CNAME   .
+
+; ------------------------------------------------------------------------------
+; 🤖 GOOGLE / ANDROID (Analytics, Ads, Crashlytics)
+; ------------------------------------------------------------------------------
+telemetry.google.com                    CNAME   .
+analytics.google.com                    CNAME   .
+www.google-analytics.com                CNAME   .
+ssl.google-analytics.com                CNAME   .
+region1.google-analytics.com            CNAME   .
+stats.g.doubleclick.net                 CNAME   .
+pagead2.googlesyndication.com           CNAME   .
+app-measurement.com                     CNAME   .
+firebase-settings.crashlytics.com       CNAME   .
+crashlytics.com                         CNAME   .
+metrics.gstatic.com                     CNAME   .
+connectivitycheck.gstatic.com           CNAME   .
+play.googleapis.com                     CNAME   .
+android.clients.google.com              CNAME   .
+android.googleapis.com                  CNAME   .
+clients2.google.com                     CNAME   .
+clients4.google.com                     CNAME   .
+
+; ------------------------------------------------------------------------------
+; 🍎 APPLE (macOS, iOS, Diagnósticos, iCloud)
+; ------------------------------------------------------------------------------
+metrics.apple.com                       CNAME   .
+securemetrics.apple.com                 CNAME   .
+supportmetrics.apple.com                CNAME   .
+notes-analytics.apple.com               CNAME   .
+metrics.icloud.com                      CNAME   .
+diagnostics.apple.com                   CNAME   .
+analytics.apple.com                     CNAME   .
+gs.apple.com                            CNAME   .
+gsp1.apple.com                          CNAME   .
+gsp2.apple.com                          CNAME   .
+xp.apple.com                            CNAME   .
+guzzoni.apple.com                       CNAME   .
+smoot.apple.com                         CNAME   .
+*.diag.apple.com                        CNAME   .
+
+; ------------------------------------------------------------------------------
+; 🐧 LINUX & DISTROS (Ubuntu, Debian, Fedora, Red Hat)
+; ------------------------------------------------------------------------------
+metrics.ubuntu.com                      CNAME   .
+popcon.ubuntu.com                       CNAME   .
+motd.ubuntu.com                         CNAME   .
+popcon.debian.org                       CNAME   .
+telemetry.canonical.com                 CNAME   .
+metrics.fedoraproject.org               CNAME   .
+countme.fedoraproject.org               CNAME   .
+cert-api.access.redhat.com              CNAME   .
+
+; ------------------------------------------------------------------------------
+; ☁️ VMWARE & HYPERVISORS
+; ------------------------------------------------------------------------------
+ceip.vmware.com                         CNAME   .
+telemetry.vmware.com                    CNAME   .
+vcsa.vmware.com                         CNAME   .
+apigw.vmware.com                        CNAME   .
+vapp-updates.vmware.com                 CNAME   .
+data.vmware.com                         CNAME   .
+analytics.vmware.com                    CNAME   .
+phonehome.vmware.com                    CNAME   .
+
+; ------------------------------------------------------------------------------
+; 🦊 MOZILLA / FIREFOX (Telemetría y Crash Reports)
+; ------------------------------------------------------------------------------
+telemetry.mozilla.org                   CNAME   .
+incoming.telemetry.mozilla.org          CNAME   .
+crash-reports.mozilla.com               CNAME   .
+crash-stats.mozilla.com                 CNAME   .
+tiles.services.mozilla.com              CNAME   .
+shavar.services.mozilla.com             CNAME   .
+
+; ------------------------------------------------------------------------------
+; 📦 AMAZON / AWS (Métricas de dispositivos y clientes)
+; ------------------------------------------------------------------------------
+device-metrics-us.amazon.com            CNAME   .
+fls-na.amazon.com                       CNAME   .
+logs.amazon.com                         CNAME   .
+clientmetrics.amazon.com                CNAME   .
+
+; ------------------------------------------------------------------------------
+; 🎨 ADOBE (Creative Cloud, Document Cloud)
+; ------------------------------------------------------------------------------
+cc-api-data.adobe.io                    CNAME   .
+data.adobedc.net                        CNAME   .
+metrics.adobe.io                        CNAME   .
+telemetry.adobe.io                      CNAME   .
+analytics.adobe.com                     CNAME   .
+
+; ------------------------------------------------------------------------------
+; ☕ ORACLE / JAVA
+; ------------------------------------------------------------------------------
+sqm.oracle.com                          CNAME   .
+oca.oracle.com                          CNAME   .
+
+; ------------------------------------------------------------------------------
+; 📊 CLOUD ANALYTICS & DEV TOOLS (Segment, Mixpanel, Amplitude, Sentry)
+; ------------------------------------------------------------------------------
+api.segment.io                          CNAME   .
+cdn.segment.com                         CNAME   .
+api.mixpanel.com                        CNAME   .
+decide.mixpanel.com                     CNAME   .
+api.amplitude.com                       CNAME   .
+region1.amplitude.com                   CNAME   .
+ingest.sentry.io                        CNAME   .
+o0.ingest.sentry.io                     CNAME   .
+
+; ------------------------------------------------------------------------------
+; 📱 REDES SOCIALES & ADS (Meta, X/Twitter, LinkedIn)
+; ------------------------------------------------------------------------------
+graph.facebook.com                      CNAME   .
+connect.facebook.net                    CNAME   .
+analytics.twitter.com                   CNAME   .
+ads-api.twitter.com                     CNAME   .
+px.ads.linkedin.com                     CNAME   .
+analytics.linkedin.com                  CNAME   .
+
+; ------------------------------------------------------------------------------
+; 🛠️ HARDWARE & SEGURIDAD (NVIDIA, Intel, Malwarebytes)
+; ------------------------------------------------------------------------------
+telemetry.gfe.nvidia.com                CNAME   .
+gfe.nvidia.com                          CNAME   .
+crl.intel.com                           CNAME   .
+telemetry.malwarebytes.com              CNAME   .
 ```
 
 Declare Zone in named.conf.local
