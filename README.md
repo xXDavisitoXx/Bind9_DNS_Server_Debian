@@ -447,12 +447,11 @@ $TTL 60
 
     IN NS localhost.
 
-; Telemetría bloqueada mediante política nativa
-telemetry.microsoft.com.rpz.local.      CNAME   rpz-nxdomain.
-vortex.data.microsoft.com.rpz.local.    CNAME   rpz-nxdomain.
-telemetry.google.com.rpz.local.         CNAME   rpz-nxdomain.
-stats.g.doubleclick.net.rpz.local.      CNAME   rpz-nxdomain.
-analytics.google.com.rpz.local.         CNAME   rpz-nxdomain.
+telemetry.microsoft.com      CNAME   .
+vortex.data.microsoft.com    CNAME   .
+telemetry.google.com         CNAME   .
+stats.g.doubleclick.net      CNAME   .
+analytics.google.com         CNAME   .
 ```
 
 Declare Zone in named.conf.local
