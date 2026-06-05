@@ -441,23 +441,18 @@ nano /etc/bind/zones/db.rpz.telemetry
 ```
 
 ```bash
-$TTL 86400
-@       IN      SOA     localhost. root.localhost. (
-                        2026060301 ; serial
-                        3600       ; refresh
-                        1800       ; retry
-                        604800     ; expire
-                        86400 )    ; minimum TTL
+$TTL 60
+@ IN SOA localhost. root.localhost. (
+        2026060301 3600 1800 604800 60 )
 
-        IN      NS      localhost.
+    IN NS localhost.
 
-; --- Lista de telemetría a anular ---
-; Bloqueamos devolviendo un nombre que no existe (NXDOMAIN)
-telemetry.microsoft.com.    CNAME   .
-vortex.data.microsoft.com.  CNAME   .
-telemetry.google.com.       CNAME   .
-stats.g.doubleclick.net.    CNAME   .
-analytics.google.com.       CNAME   .
+; Telemetría bloqueada mediante política nativa
+telemetry.microsoft.com.rpz.local.      CNAME   rpz-nxdomain.
+vortex.data.microsoft.com.rpz.local.    CNAME   rpz-nxdomain.
+telemetry.google.com.rpz.local.         CNAME   rpz-nxdomain.
+stats.g.doubleclick.net.rpz.local.      CNAME   rpz-nxdomain.
+analytics.google.com.rpz.local.         CNAME   rpz-nxdomain.
 ```
 
 Declare Zone in named.conf.local
