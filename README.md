@@ -683,3 +683,57 @@ Restart service
 ```bash
 sudo systemctl restart bind9
 ```
+
+
+Test rpz from DNS server: 
+
+External resolution:
+```bash
+dig telemetry.microsoft.com @8.8.8.8
+
+; <<>> DiG 9.20.23-1~deb13u1-Debian <<>> telemetry.microsoft.com @8.8.8.8
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 20465
+;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 512
+;; QUESTION SECTION:
+;telemetry.microsoft.com.       IN      A
+
+;; ANSWER SECTION:
+telemetry.microsoft.com. 1752   IN      A       65.52.100.9
+telemetry.microsoft.com. 1752   IN      A       20.76.201.171
+
+;; Query time: 67 msec
+;; SERVER: 8.8.8.8#53(8.8.8.8) (UDP)
+;; WHEN: Fri Jun 05 11:34:07 CEST 2026
+;; MSG SIZE  rcvd: 84
+```
+
+RPZ resolution:
+```bash
+dig telemetry.microsoft.com @localhost
+
+; <<>> DiG 9.20.23-1~deb13u1-Debian <<>> telemetry.microsoft.com @localhost
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 28224
+;; flags: qr rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 2
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: b4c8be2784a8398c010000006a22981468e6b77b8a06af46 (good)
+;; QUESTION SECTION:
+;telemetry.microsoft.com.       IN      A
+
+;; ADDITIONAL SECTION:
+rpz.telemetry.          60      IN      SOA     localhost. root.localhost. 2026060502 3600 1800 604800 60
+
+;; Query time: 243 msec
+;; SERVER: ::1#53(localhost) (UDP)
+;; WHEN: Fri Jun 05 11:34:12 CEST 2026
+;; MSG SIZE  rcvd: 143
+```
+
