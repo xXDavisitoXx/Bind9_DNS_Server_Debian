@@ -69,7 +69,6 @@ nano /etc/bind/conf/named.conf
 ```
 Edit config path and add rndc.key file:
 ```bash
-
 // This is the primary configuration file for the BIND DNS server named.
 //
 // Please read /usr/share/doc/bind9/README.Debian for information on the
@@ -77,6 +76,10 @@ Edit config path and add rndc.key file:
 // this configuration file.
 //
 // If you are just adding zones, please do that in /etc/bind/named.conf.local
+
+//include "/etc/bind/named.conf.options";
+//include "/etc/bind/named.conf.local";
+//include "/etc/bind/named.conf.root-hints";
 
 include "/etc/bind/conf/named.conf.options";
 include "/etc/bind/conf/named.conf.local";
