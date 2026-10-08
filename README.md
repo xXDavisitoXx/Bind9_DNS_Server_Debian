@@ -61,8 +61,7 @@ mv /etc/bind/rndc.key /etc/bind/keys/
 ## Backup template files: 
 
 ```bash
-cp /etc/bind/config/named.conf.options /etc/bind/backup/named.conf.options.bak
-cp /etc/bind/config/named.conf.local /etc/bind/backup/named.conf.local.bak
+cp /etc/bind/config/named.conf.options /etc/bind/backup/named.conf*
 ```
 
 Edit /etc/bind/conf/named.conf file
