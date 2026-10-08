@@ -53,10 +53,14 @@ mkdir conf zones keys backup
 ```
 
 Move config files:
+```bash
 mv /etc/bind/named* /etc/bind/conf/
+```
 
 Move key file:
+```bash
 mv /etc/bind/rndc.key /etc/bind/keys/
+```
 
 ## Backup template files: 
 
