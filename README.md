@@ -8,7 +8,7 @@ apt update
 
 Install Bind9: 
 ```bash
-apt install bind9
+apt install bind9 bind9-utils bind9-dnsutils
 ```
 
 Check the service started and enable:
