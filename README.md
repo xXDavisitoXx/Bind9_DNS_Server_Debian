@@ -57,10 +57,14 @@ Move key file:
 mv /etc/bind/rndc.key /etc/bind/keys/
 ```
 
-## Backup template files: 
-
+Backup template files: 
 ```bash
 cp /etc/bind/named* /etc/bind/backup/
+```
+
+Move config files:
+```bash
+mv /etc/bind/named* /etc/bind/conf/
 ```
 
 Edit /etc/bind/conf/named.conf file
