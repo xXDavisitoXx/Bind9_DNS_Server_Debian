@@ -107,31 +107,41 @@ nano /etc/bind/conf/named.conf.options
 
 ```bash
 options {
+
+        // Working directory for cache and temporary DNS files
         directory "/var/cache/bind";
 
+        // Enable recursive DNS resolution for clients
         recursion yes;
+
+        // Listen for DNS requests only on these IP addresses
         listen-on {
-                127.0.0.1;
-                192.168.1.10; # YOUR IP DNS SERVER
+                127.0.0.1;      // Localhost interface
+                192.168.1.10;   // DNS server IP address
         };
 
+        // Allow DNS queries only from trusted networks
         allow-query {
                 localhost;
                 192.168.1.0/24;
         };
 
+        // Allow recursive resolution only for internal clients
         allow-recursion {
                 localhost;
                 192.168.1.0/24;
         };
 
+        // Upstream DNS servers used to resolve external queries
         forwarders {
                 8.8.8.8;
                 8.8.4.4;
         };
 
+        // Automatically validate DNSSEC signatures
         dnssec-validation auto;
 
+        // Return standard non-authoritative NXDOMAIN responses
         auth-nxdomain no;
 };
 ```
