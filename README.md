@@ -138,11 +138,10 @@ options {
                 8.8.4.4;
         };
 
-        // Automatically validate DNSSEC signatures
+// Automatically validate DNSSEC signatures
         dnssec-validation auto;
-
-        // Return standard non-authoritative NXDOMAIN responses
-        auth-nxdomain no;
+// Hide BIND version from queries
+        version "not disclosed";
 };
 ```
 Check config: 
