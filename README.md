@@ -60,7 +60,7 @@ mv /etc/bind/rndc.key /etc/bind/keys/
 ## Backup template files: 
 
 ```bash
-cp /etc/bind/config/named* /etc/bind/backup/
+cp /etc/bind/named* /etc/bind/backup/
 ```
 
 Edit /etc/bind/conf/named.conf file
