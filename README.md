@@ -104,8 +104,8 @@ Configure options file:
 ```bash
 nano /etc/bind/conf/named.conf.options
 ```
-
-```bash
+With recursion enable:
+```conf
 options {
 
         // Working directory for cache and temporary DNS files
@@ -144,6 +144,44 @@ options {
         version "not disclosed";
 };
 ```
+With recursion disable:
+```conf
+options {
+
+        // Directory where BIND stores cache, temporary files and runtime data
+        directory "/var/cache/bind";
+
+        // Disable recursion to prevent DNS queries from being forwarded to the Internet
+        recursion no;
+
+        // IP addresses on which BIND will listen for DNS requests
+        listen-on {
+                127.0.0.1;      // Localhost
+                <DNS_SERVER_IP>; // Primary DNS server
+        };
+
+        // Hosts allowed to perform DNS queries against this server
+        allow-query {
+                localhost;         // The server itself
+                <DNS_SLAVE_1_IP>;  // Secondary DNS server 1
+                <DNS_SLAVE_2_IP>;  // Secondary DNS server 2
+        };
+
+        // Hosts allowed to request zone transfers (AXFR/IXFR)
+        allow-transfer {
+                <DNS_SLAVE_1_IP>;  // Secondary DNS server 1
+                <DNS_SLAVE_2_IP>;  // Secondary DNS server 2
+        };
+
+        // Enable automatic DNSSEC validation
+        dnssec-validation auto;
+
+        // Hide BIND version information from DNS queries
+        version "not disclosed";
+};
+
+```
+
 Check config: 
 
 ```bash
