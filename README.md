@@ -86,6 +86,7 @@ Edit config path and add rndc.key file:
 //include "/etc/bind/named.conf.local";
 //include "/etc/bind/named.conf.root-hints";
 
+// Personal config:
 include "/etc/bind/conf/named.conf.options";
 include "/etc/bind/conf/named.conf.local";
 include "/etc/bind/conf/named.conf.root-hints";
@@ -105,6 +106,7 @@ nano /etc/bind/conf/named.conf.options
 ```
 
 With recursion enable:
+In order to access the internet
 ```conf
 options {
 
@@ -122,66 +124,76 @@ options {
 
 // Listen for DNS requests only on these IP addresses
      listen-on {
-          127.0.0.1;      // Localhost interface
-          192.168.1.10;   // DNS server IP address
+          127.0.0.1;                // Localhost interface
+          <YOUR_DNS_SERVER_IP>;     // DNS server IP addresS
      };
 
-// Allow DNS queries only from trusted networks
+// Allow DNS queries only from trusted hosts or networks
      allow-query {
-                localhost;
-                192.168.1.0/24;
+          localhost;
+          192.168.1.0/24;     // Network Example
+          192.168.1.6:        // Host example    
         };
+// Hosts allowed to request zone transfers (AXFR/IXFR) for resolvers
+     allow-transfer {
+          192.168.1.0/24;     // Network Example
+          <DNS_SLAVE_1_IP>;  // Secondary DNS server 1
+          <DNS_SLAVE_2_IP>;  // Secondary DNS server 2
+     };
 
-// Allow recursive resolution only for internal clients
+// Allow recursive resolution for specific clients or resolvers 
      allow-recursion {
           localhost;
-          192.168.1.0/24;
+          192.168.1.0/24;       // Network Example
+          192.168.1.6;          // Host example   
      };
 
 // Upstream DNS servers used to resolve external queries
 // This example use CloudFlare external DNS servers
         forwarders {
-                1.1.1.1;      // You can change these to whichever you prefer
-                1.0.0.1;     // You can change these to whichever you prefer
+               1.1.1.1;     // You can change these to whichever you prefer
+               1.0.0.1;     // You can change these to whichever you prefer
         };
 };
 ```
 With recursion disable:
+⚠️for offline environments
 ```conf
 options {
 
-        // Directory where BIND stores cache, temporary files and runtime data
-        directory "/var/cache/bind";
+// Directory where BIND stores cache, temporary files and runtime data
+     directory "/var/cache/bind";
 
-        // Disable recursion to prevent DNS queries from being forwarded to the Internet
-        recursion no;
+// Disable recursion to prevent DNS queries from being forwarded to the Internet
+     recursion no;
 
-        // IP addresses on which BIND will listen for DNS requests
-        listen-on {
-                127.0.0.1;      // Localhost
-                <DNS_SERVER_IP>; // Primary DNS server
-        };
+// Enable automatic DNSSEC validation
+     dnssec-validation auto;
 
-        // Hosts allowed to perform DNS queries against this server
-        allow-query {
-                localhost;         // The server itself
-                <DNS_SLAVE_1_IP>;  // Secondary DNS server 1
-                <DNS_SLAVE_2_IP>;  // Secondary DNS server 2
-        };
+// Hide BIND version information from DNS queries
+     version "not disclosed";
 
-        // Hosts allowed to request zone transfers (AXFR/IXFR)
-        allow-transfer {
-                <DNS_SLAVE_1_IP>;  // Secondary DNS server 1
-                <DNS_SLAVE_2_IP>;  // Secondary DNS server 2
-        };
+// IP addresses on which BIND will listen for DNS requests
+     listen-on {
+          127.0.0.1;      // Localhost  interface
+          <YOUR_DNS_SERVER_IP>; // Primary DNS server
+     };
 
-        // Enable automatic DNSSEC validation
-        dnssec-validation auto;
+// Hosts allowed to perform DNS queries against this server
+     allow-query {
+     localhost;         // The server itself
+     <DNS_SLAVE_1_IP>;  // Secondary DNS server 1
+     <DNS_SLAVE_2_IP>;  // Secondary DNS server 2
+     };
 
-        // Hide BIND version information from DNS queries
-        version "not disclosed";
+// Hosts allowed to request zone transfers (AXFR/IXFR)
+     allow-transfer {
+          <DNS_SLAVE_1_IP>;  // Secondary DNS server 1
+          <DNS_SLAVE_2_IP>;  // Secondary DNS server 2
+     };
+
+
 };
-
 ```
 
 Check config: 
