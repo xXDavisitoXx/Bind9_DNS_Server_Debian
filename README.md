@@ -98,7 +98,7 @@ It must be in this path to work; otherwise, we have to modify the service
  ln -s /etc/bind/conf/named.conf /etc/bind/
 ```
 
-Configure options file:
+### Configure options file:
 The named.conf.options file defines the global configuration and security policies for the BIND9 server; it controls key aspects such as which IP addresses the service listens on, who is permitted to make queries or transfer zones, whether recursive internet resolution is allowed, and which external forwarders should be used
 
 nano /etc/bind/conf/named.conf.options
