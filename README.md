@@ -1,20 +1,20 @@
 # Bind9_DNS_Server_Debian
 
-## Install software
-Refresh APT:
+### Install software
+Refresh APT repositories:
 ```bash
 apt update
 ```
 
 Install Bind9: 
 ```bash
-apt install bind9 bind9-utils bind9-dnsutils
+sudo apt install bind9 bind9-utils bind9-dnsutils
 ```
 
 Check the service started and enable:
 
 ```bash
-systemctl status bind9
+sudo systemctl status bind9
 ```
 
 ```bash
@@ -41,10 +41,10 @@ named -v
 BIND 9.20.23-1~deb13u1-Debian (Stable Release) <id:>
 ```
 
-Create a structure bind folders:
+### Create a structure bind folders:
 Stop service
 ```bash
-systemctl stop bind9
+sudo systemctl stop bind9
 ```
 
 ```bash
@@ -67,7 +67,8 @@ Move config files:
 mv /etc/bind/named* /etc/bind/conf/
 ```
 
-Edit /etc/bind/conf/named.conf file
+### Edit /etc/bind/conf/named.conf file
+The named.conf file defines and specifies the paths to the additional configuration files required for the BIND9 server to run
 ```bash
 nano /etc/bind/conf/named.conf
 ```
@@ -92,16 +93,14 @@ include "/etc/bind/keys/rndc.key";
 ```
 
 Create simbolic link named.conf
+It must be in this path to work; otherwise, we have to modify the service
 ```bash
  ln -s /etc/bind/conf/named.conf /etc/bind/
 ```
 
-Test service
-
-
-
 Configure options file:
-```bash
+The named.conf.options file defines the global configuration and security policies for the BIND9 server; it controls key aspects such as which IP addresses the service listens on, who is permitted to make queries or transfer zones, whether recursive internet resolution is allowed, and which external forwarders should be used
+
 nano /etc/bind/conf/named.conf.options
 ```
 With recursion enable:
@@ -187,10 +186,13 @@ Check config:
 ```bash
 named-checkconf
 ```
-Restart service:
+Test service
 
 ```bash
-systemctl restart bind9
+sudo systemctl start bind9
+```
+```bash
+sudo systemctl status bind9
 ```
 
 ## Create DNS zones in named.conf.local: 
