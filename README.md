@@ -100,47 +100,50 @@ It must be in this path to work; otherwise, we have to modify the service
 
 ### Configure options file:
 The named.conf.options file defines the global configuration and security policies for the BIND9 server; it controls key aspects such as which IP addresses the service listens on, who is permitted to make queries or transfer zones, whether recursive internet resolution is allowed, and which external forwarders should be used
-
+```bash
 nano /etc/bind/conf/named.conf.options
 ```
+
 With recursion enable:
 ```conf
 options {
 
-        // Working directory for cache and temporary DNS files
-        directory "/var/cache/bind";
+// Working directory for cache and temporary DNS files
+     directory "/var/cache/bind";
 
-        // Enable recursive DNS resolution for clients
+// Enable recursive DNS resolution for clients
         recursion yes;
-
-        // Listen for DNS requests only on these IP addresses
-        listen-on {
-                127.0.0.1;      // Localhost interface
-                192.168.1.10;   // DNS server IP address
-        };
-
-        // Allow DNS queries only from trusted networks
-        allow-query {
-                localhost;
-                192.168.1.0/24;
-        };
-
-        // Allow recursive resolution only for internal clients
-        allow-recursion {
-                localhost;
-                192.168.1.0/24;
-        };
-
-        // Upstream DNS servers used to resolve external queries
-        forwarders {
-                8.8.8.8;
-                8.8.4.4;
-        };
 
 // Automatically validate DNSSEC signatures
         dnssec-validation auto;
+
 // Hide BIND version from queries
         version "not disclosed";
+
+// Listen for DNS requests only on these IP addresses
+     listen-on {
+          127.0.0.1;      // Localhost interface
+          192.168.1.10;   // DNS server IP address
+     };
+
+// Allow DNS queries only from trusted networks
+     allow-query {
+                localhost;
+                192.168.1.0/24;
+        };
+
+// Allow recursive resolution only for internal clients
+     allow-recursion {
+          localhost;
+          192.168.1.0/24;
+     };
+
+// Upstream DNS servers used to resolve external queries
+// This example use CloudFlare external DNS servers
+        forwarders {
+                1.1.1.1;      // You can change these to whichever you prefer
+                1.0.0.1;     // You can change these to whichever you prefer
+        };
 };
 ```
 With recursion disable:
