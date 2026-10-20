@@ -218,6 +218,15 @@ sudo systemctl start bind9
 sudo systemctl status bind9
 ```
 
+:x: If the service fails, execute the following to see where the error lies
+```bash
+sudo journalctl -u named.service -n 40 --no-pager
+```
+and start again
+```bash
+sudo systemctl start bind9
+```
+
 ## Create DNS zones in named.conf.local: 
 ```bash
 nano /etc/bind/conf/named.conf.local
