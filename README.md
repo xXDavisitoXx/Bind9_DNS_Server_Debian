@@ -160,10 +160,10 @@ options {
 
 // Upstream DNS servers used to resolve external queries
 // This example use CloudFlare external DNS servers
-        forwarders {
-               1.1.1.1;     // You can change these to whichever you prefer
-               1.0.0.1;     // You can change these to whichever you prefer
-        };
+      forwarders {
+          1.1.1.1;     // You can change these to whichever you prefer
+          1.0.0.1;     // You can change these to whichever you prefer
+      };
 };
 ```
 With recursion disable:
@@ -191,18 +191,16 @@ options {
 
 // Hosts allowed to perform DNS queries against this server
      allow-query {
-     localhost;         // The server itself
-     <DNS_SLAVE_1_IP>;  // Secondary DNS server 1
-     <DNS_SLAVE_2_IP>;  // Secondary DNS server 2
+         localhost;         // The server itself
+         <DNS_SLAVE_1_IP>;  // Secondary DNS server 1
+         <DNS_SLAVE_2_IP>;  // Secondary DNS server 2
      };
 
 // Hosts allowed to request zone transfers (AXFR/IXFR)
      allow-transfer {
-          <DNS_SLAVE_1_IP>;  // Secondary DNS server 1
-          <DNS_SLAVE_2_IP>;  // Secondary DNS server 2
+         <DNS_SLAVE_1_IP>;  // Secondary DNS server 1
+         <DNS_SLAVE_2_IP>;  // Secondary DNS server 2
      };
-
-
 };
 ```
 
@@ -662,10 +660,13 @@ gfe.nvidia.com                          CNAME   .
 crl.intel.com                           CNAME   .
 telemetry.malwarebytes.com              CNAME   .
 ```
+
 ### Check service
 ```bash
 sudo named-checkconf
 ```
+
+✔️ If it returns nothing, everything is correct
 
 # check dns zones:
 
