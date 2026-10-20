@@ -109,7 +109,7 @@ Functions:
 * Zone Transfers: Initiates and shares updated information with slave DNS servers via zone transfers (AXFR/IXFR)[cite: 1].
 * Change Notification (NOTIFY): Promptly notifies slave servers whenever modifications are made to records to keep them synchronized[cite: 1].
 
-### Configure options file:
+### Configure named.conf.options file:
 The named.conf.options file defines the global configuration and security policies for the BIND9 server; it controls key aspects such as which IP addresses the service listens on, who is permitted to make queries or transfer zones, whether recursive internet resolution is allowed, and which external forwarders should be used
 ```bash
 nano /etc/bind/conf/named.conf.options
@@ -227,16 +227,12 @@ and start again
 sudo systemctl start bind9
 ```
 
-## Create DNS zones in named.conf.local: 
+## Add DNS zones in named.conf.local
 ```bash
 nano /etc/bind/conf/named.conf.local
 ```
 
 ```bash
-//
-// Do any local configuration here
-//
-
 zone "homelab.guide.org" {
         type master;
         file "/etc/bind/zones/db.homelab.guide.org.zone";
@@ -681,6 +677,12 @@ OK
 ```bash
 named-checkzone 1.168.192.in-addr.arpa /etc/bind/zones/db.192.168.1.in-addr.arpa.zone
 zone 1.168.192.in-addr.arpa/IN: loaded serial 2026060301
+OK
+```
+
+```bash
+named-checkzone rpz.telemetry /etc/bind/zones/db.rpz.zone
+zone rpz.telemetry/IN: loaded serial 2026060502
 OK
 ```
 
