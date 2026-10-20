@@ -204,13 +204,13 @@ options {
 };
 ```
 
-Check config: 
-
+### Check the config is correct
 ```bash
-named-checkconf
+sudo named-checkconf
 ```
-Test service
+✔️ If it returns nothing, everything is correct
 
+Test the service
 ```bash
 sudo systemctl start bind9
 ```
@@ -660,13 +660,6 @@ gfe.nvidia.com                          CNAME   .
 crl.intel.com                           CNAME   .
 telemetry.malwarebytes.com              CNAME   .
 ```
-
-### Check service
-```bash
-sudo named-checkconf
-```
-
-✔️ If it returns nothing, everything is correct
 
 # check dns zones:
 
