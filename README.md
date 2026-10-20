@@ -160,7 +160,7 @@ options {
 // Listen for DNS requests only on these IP addresses
      listen-on {
           127.0.0.1;                // Localhost interface
-          <YOUR_DNS_SERVER_IP>;     // DNS server IP addresS
+          <YOUR_DNS_MASTER_IP>;     // DNS server IP addresS
      };
 
 // Allow DNS queries only from trusted hosts or networks
@@ -211,7 +211,7 @@ options {
 // IP addresses on which BIND will listen for DNS requests
      listen-on {
           127.0.0.1;      // Localhost  interface
-          <YOUR_DNS_SERVER_IP>; // Primary DNS server
+          <YOUR_DNS_MASTER_IP>; // IP DNS server
      };
 
 // Hosts allowed to perform DNS queries against this server
@@ -715,11 +715,50 @@ OK
 
 ##  DNS SLAVES
 
+### Configure named.conf.options file:
+
 * Direct Client Resolution: Acts as the primary resolvers for LAN clients, handling and answering all direct DNS queries from end-user devices.
 * Secondary Zone Copy (Slave): Maintains synchronized read-only copies of the master zone files received via zone transfers (AXFR/IXFR).
 * Load Balancing & Redistribution: Distributes query traffic across the LAN to improve performance, reliability, and fault tolerance.
 * Local Policy Enforcement (RPZ): Applies response-policy rules (such as blocking telemetry or malicious domains) locally to all client requests.
 * High Availability (HA): Ensures continuous DNS resolution for the network even if the primary master server experiences downtime.
+
+The named.conf.options file defines the global configuration and security policies for the BIND9 server; it controls key aspects such as which IP addresses the service listens on, who is permitted to make queries or transfer zones, whether recursive internet resolution is allowed, and which external forwarders should be used
+```bash
+nano /etc/bind/conf/named.conf.options
+```
+```conf
+options {
+        directory "/var/cache/bind";
+
+// Enable automatic DNSSEC validation
+        dnssec-validation auto;
+
+// Hide BIND version information from queries
+        version "not disclosed";
+
+// Recursion must be enabled for the DNS Blackhole to work
+        recursion yes;
+
+// IP addresses on which BIND will listen for DNS queries
+        listen-on {
+                127.0.0.1;      // Localhost IP address
+                YOUR_DNS_SLAVE_IP;   // DNS server IP address
+        };
+
+// Define who is allowed to perform DNS queries against this server
+        allow-query {
+                localhost;      // The server itself
+                192.160.1.0/24; // Local network
+        };
+
+// DNS Blackhole RPZ zone used to block telemetry domains
+        response-policy {
+                zone "rpz.telemetry";
+        };
+};
+```
+
 
 
 Test rpz from DNS server: 
