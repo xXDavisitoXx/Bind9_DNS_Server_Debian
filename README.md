@@ -759,7 +759,39 @@ options {
 };
 ```
 
+### Configure named.conf.local
 
+```bash
+nano /etc/bind/conf/named.conf.local
+```
+```conf
+// Primary forward DNS zone
+zone "homelab.guide.org" {
+        type slave;
+        file "/var/cache/bind/db.correodip.exteriores.gob.es.zone";
+        masters {
+              YOUR_DNS_MASTER_IP;
+        };
+};
+
+// Primary reverse DNS zone
+zone "1.168.192.in-addr.arpa" {
+        type slave;
+        file "/var/cache/bind/db.31.172.in-addr.arpa.zone";
+        masters {
+              YOUR_DNS_MASTER_IP;
+        };
+};
+
+// DNS RPZ zone used to block telemetry queries
+zone "rpz.telemetry" {
+        type slave;
+        file "/var/cache/bind/db.rpz.zone";
+        masters {
+              YOUR_DNS_MASTER_IP;
+        };
+};
+```
 
 Test rpz from DNS server: 
 
