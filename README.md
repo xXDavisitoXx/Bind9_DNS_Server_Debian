@@ -226,6 +226,9 @@ and start again
 ```bash
 sudo systemctl start bind9
 ```
+```bash
+sudo systemctl status bind9
+```
 
 ## Add DNS zones in named.conf.local
 ```bash
