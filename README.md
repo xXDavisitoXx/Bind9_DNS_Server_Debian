@@ -247,8 +247,9 @@ zone "rpz.telemetry" {
 };
 ```
 
-Create file zones:
+## Create file zones:
 
+### Main zone file
 ```bash
 nano /etc/bind/zones/db.homelab.guide.org.zone
 ```
@@ -378,7 +379,7 @@ switch-core   IN     A       192.168.1.99
 router-isp    IN     A       192.168.1.100
 ```
 
-Create inverse zone
+### Create main reverse zone
 ```bash
 nano /etc/bind/zones/db.192.168.1.in-addr.arpa.zone
 ```
@@ -495,27 +496,7 @@ $TTL 86400
 99      IN      PTR     switch-core.homelab.guide.org.
 100     IN      PTR     router-isp.homelab.guide.org.
 ```
-
-### Check service
-```bash
-sudo named-checkconf
-```
-
-# check dns zones:
-
-```bash
-named-checkzone homelab.guide.org /etc/bind/zones/db.homelab.guide.org.zone
-zone homelab.guide.org/IN: loaded serial 2026060301
-OK
-```
-
-```bash
-named-checkzone 1.168.192.in-addr.arpa /etc/bind/zones/db.192.168.1.in-addr.arpa.zone
-zone 1.168.192.in-addr.arpa/IN: loaded serial 2026060301
-OK
-```
-
-Create RPZ:
+### Create RPZ telemetry zone:
 ```bash
 nano /etc/bind/zones/db.rpz.zone
 ```
@@ -681,34 +662,23 @@ gfe.nvidia.com                          CNAME   .
 crl.intel.com                           CNAME   .
 telemetry.malwarebytes.com              CNAME   .
 ```
+### Check service
+```bash
+sudo named-checkconf
+```
 
-Declare Zone in named.conf.local
-
+# check dns zones:
 
 ```bash
- nano /etc/bind/conf/named.conf.local
+named-checkzone homelab.guide.org /etc/bind/zones/db.homelab.guide.org.zone
+zone homelab.guide.org/IN: loaded serial 2026060301
+OK
 ```
 
 ```bash
-//
-// Do any local configuration here
-//
-
-zone "lan" {
-        type master;
-        file "/etc/bind/zones/db.homelab.guide.org.zone";
-};
-
-zone "1.168.192.in-addr.arpa" {
-        type master;
-        file "/etc/bind/zones/db.192.168.1.in-addr.arpa.zone";
-};
-
-zone "rpz.telemetry" {
-    type master;
-    file "/etc/bind/zones/db.rpz.telemetry.zone";
-    allow-query { none; };
-};
+named-checkzone 1.168.192.in-addr.arpa /etc/bind/zones/db.192.168.1.in-addr.arpa.zone
+zone 1.168.192.in-addr.arpa/IN: loaded serial 2026060301
+OK
 ```
 
 Active response policy in named.conf.options
