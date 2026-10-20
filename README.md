@@ -102,6 +102,12 @@ It must be in this path to work; otherwise, we have to modify the service
 ```bash
  ln -s /etc/bind/conf/named.conf /etc/bind/
 ```
+## Master DNS
+Functions:
+* Zone Management (SOA): Serves as the primary authority responsible for creating, editing, and managing zone records (such as the SOA record)[cite: 3].
+* Master Records Storage: Stores the original and official zone files for domains (e.g., davisito.lan)[cite: 3].
+* Zone Transfers: Initiates and shares updated information with slave DNS servers via zone transfers (AXFR/IXFR)[cite: 1].
+* Change Notification (NOTIFY): Promptly notifies slave servers whenever modifications are made to records to keep them synchronized[cite: 1].
 
 ### Configure options file:
 The named.conf.options file defines the global configuration and security policies for the BIND9 server; it controls key aspects such as which IP addresses the service listens on, who is permitted to make queries or transfer zones, whether recursive internet resolution is allowed, and which external forwarders should be used
@@ -226,19 +232,19 @@ nano /etc/bind/conf/named.conf.local
 
 zone "lan" {
         type master;
-        file "/etc/bind/zones/db.homelab.guide.org";
+        file "/etc/bind/zones/db.homelab.guide.org.zone";
 };
 
 zone "1.168.192.in-addr.arpa" {
         type master;
-        file "/etc/bind/zones/db.192.168.1.in-addr.arpa";
+        file "/etc/bind/zones/db.192.168.1.in-addr.arpa.zone";
 };
 ```
 
 Create file zones:
 
 ```bash
-nano /etc/bind/zones/db.homelab.guide.org
+nano /etc/bind/zones/db.homelab.guide.org.zone
 ```
 
 ```bash
@@ -368,13 +374,8 @@ router-isp    IN     A       192.168.1.100
 
 Create inverse zone
 ```bash
-nano /etc/bind/zones/db.192.168.1.in-addr.arpa
+nano /etc/bind/zones/db.192.168.1.in-addr.arpa.zone
 ```
-
-```bash
-nano /etc/bind/zones/db.192.168.1.in-addr.arpa
-```
-
 ```bash
 $TTL 86400
 @       IN      SOA     ns.homelab.guide.org. admin.homelab.guide.org. (
@@ -497,20 +498,20 @@ sudo named-checkconf
 # check dns zones:
 
 ```bash
-named-checkzone homelab.guide.org /etc/bind/zones/db.homelab.guide.org
+named-checkzone homelab.guide.org /etc/bind/zones/db.homelab.guide.org.zone
 zone homelab.guide.org/IN: loaded serial 2026060301
 OK
 ```
 
 ```bash
-named-checkzone 1.168.192.in-addr.arpa /etc/bind/zones/db.192.168.1.in-addr.arpa
+named-checkzone 1.168.192.in-addr.arpa /etc/bind/zones/db.192.168.1.in-addr.arpa.zone
 zone 1.168.192.in-addr.arpa/IN: loaded serial 2026060301
 OK
 ```
 
 Create RPZ:
 ```bash
-nano /etc/bind/zones/db.rpz.telemetry
+nano /etc/bind/zones/db.rpz.telemetry.zone
 ```
 
 ```bash
@@ -689,17 +690,17 @@ Declare Zone in named.conf.local
 
 zone "lan" {
         type master;
-        file "/etc/bind/zones/db.homelab.guide.org";
+        file "/etc/bind/zones/db.homelab.guide.org.zone";
 };
 
 zone "1.168.192.in-addr.arpa" {
         type master;
-        file "/etc/bind/zones/db.192.168.1.in-addr.arpa";
+        file "/etc/bind/zones/db.192.168.1.in-addr.arpa.zone";
 };
 
 zone "rpz.telemetry" {
     type master;
-    file "/etc/bind/zones/db.rpz.telemetry";
+    file "/etc/bind/zones/db.rpz.telemetry.zone";
     allow-query { none; };
 };
 ```
