@@ -113,6 +113,19 @@ Once the system has been generated, we regenerate the bind key.
 rndc-confgen -a -c /etc/bind/keys/rndc.key
 ```
 
+Test the service
+```bash
+sudo systemctl start bind9
+```
+```bash
+sudo systemctl status bind9
+```
+
+:x: If the service fails, execute the following to see where the error lies
+```bash
+sudo journalctl -u named.service -n 40 --no-pager
+```
+
 ## Master DNS
 Functions:
 * Zone Management (SOA): Serves as the primary authority responsible for creating, editing, and managing zone records (such as the SOA record)[cite: 3].
