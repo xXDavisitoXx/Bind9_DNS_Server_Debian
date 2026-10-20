@@ -129,10 +129,10 @@ sudo journalctl -u named.service -n 40 --no-pager
 
 ## Master DNS
 Functions:
-* Zone Management (SOA): Serves as the primary authority responsible for creating, editing, and managing zone records (such as the SOA record)[cite: 3].
-* Master Records Storage: Stores the original and official zone files for domains (e.g., davisito.lan)[cite: 3].
-* Zone Transfers: Initiates and shares updated information with slave DNS servers via zone transfers (AXFR/IXFR)[cite: 1].
-* Change Notification (NOTIFY): Promptly notifies slave servers whenever modifications are made to records to keep them synchronized[cite: 1].
+* Zone Management (SOA): Serves as the primary authority responsible for creating, editing, and managing zone records (such as the SOA record)
+* Master Records Storage: Stores the original and official zone files for domains
+* Zone Transfers: Initiates and shares updated information with slave DNS servers via zone transfers (AXFR/IXFR)
+* Change Notification (NOTIFY): Promptly notifies slave servers whenever modifications are made to records to keep them synchronized
 
 ### Configure named.conf.options file:
 The named.conf.options file defines the global configuration and security policies for the BIND9 server; it controls key aspects such as which IP addresses the service listens on, who is permitted to make queries or transfer zones, whether recursive internet resolution is allowed, and which external forwarders should be used
