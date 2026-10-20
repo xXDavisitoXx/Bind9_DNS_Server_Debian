@@ -681,7 +681,7 @@ zone 1.168.192.in-addr.arpa/IN: loaded serial 2026060301
 OK
 ```
 
-Active response policy in named.conf.options
+### Active response policy in named.conf.options of slaves DNS
 
 ```bash
 nano named.conf.local nano /etc/bind/conf/named.conf.options
@@ -689,38 +689,35 @@ nano named.conf.local nano /etc/bind/conf/named.conf.options
 
 ```bash
 options {
-        directory "/var/cache/bind";
+    directory "/var/cache/bind";
 
-        recursion yes;
-        listen-on {
-                127.0.0.1;
-                192.168.1.10; # YOUR IP DNS SERVER
-        };
+// Enables automatic cryptographic DNSSEC validation
+    dnssec-validation auto;
 
-        allow-query {
-                localhost;
-                192.168.1.0/24;
-        };
+// Disables the old authoritative response for non-existent domains (modern standard)
+    auth-nxdomain no;
 
-        allow-recursion {
-                localhost;
-                192.168.1.0/24;
-        };
+// Disallows the server to perform recursive queries on behalf of clients
+    recursion no;
 
-        forwarders {
-                8.8.8.8;
-                8.8.4.4;
-        };
+    listen-on {
+        127.0.0.1;
+        DNS-SLAVE_IP ; # YOUR IP DNS SERVER
+    };
 
+    allow-query {
+        localhost;
+        192.168.1.0/24;
+    };
 
-        response-policy {
+    allow-recursion {
+        localhost;
+        192.168.1.0/24;
+    };
+
+    response-policy {
         zone "rpz.telemetry";
-        };
-
-        dnssec-validation auto;
-
-        auth-nxdomain no;
-
+    };
 };
 ```
 
