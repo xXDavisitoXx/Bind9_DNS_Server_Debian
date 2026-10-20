@@ -246,7 +246,6 @@ zone "1.168.192.in-addr.arpa" {
 zone "rpz.telemetry" {
     type master;
     file "/etc/bind/zones/db.rpz.zone";
-    allow-query { none; };
 };
 ```
 
@@ -685,57 +684,6 @@ named-checkzone rpz.telemetry /etc/bind/zones/db.rpz.zone
 zone rpz.telemetry/IN: loaded serial 2026060502
 OK
 ```
-
-### Active response policy in named.conf.options of slaves DNS
-
-```bash
-nano named.conf.local nano /etc/bind/conf/named.conf.options
-```
-
-```bash
-options {
-    directory "/var/cache/bind";
-
-// Enables automatic cryptographic DNSSEC validation
-    dnssec-validation auto;
-
-// Disables the old authoritative response for non-existent domains (modern standard)
-    auth-nxdomain no;
-
-// Disallows the server to perform recursive queries on behalf of clients
-    recursion no;
-
-    listen-on {
-        127.0.0.1;
-        DNS-SLAVE_IP ; # YOUR IP DNS SERVER
-    };
-
-    allow-query {
-        localhost;
-        192.168.1.0/24;
-    };
-
-    allow-recursion {
-        localhost;
-        192.168.1.0/24;
-    };
-
-    response-policy {
-        zone "rpz.telemetry";
-    };
-};
-```
-
-Check service
-```bash
-sudo named-checkconf
-```
-
-Restart service
-```bash
-sudo systemctl restart bind9
-```
-
 
 Test rpz from DNS server: 
 
