@@ -106,6 +106,7 @@ It must be in this path to work; otherwise, we have to modify the service
 
 We can clone this machine twice and create the slaves by regenerating them.
 To regenerate the Debian system:
+
 [Regenerate Debian Machine](https://github.com/xXDavisitoXx/Regenerate_Debian13_Machine)
 
 Once the system has been generated, we regenerate the bind key.
