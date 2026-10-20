@@ -777,7 +777,7 @@ zone "homelab.guide.org" {
 // Primary reverse DNS zone
 zone "1.168.192.in-addr.arpa" {
         type slave;
-        file "/var/cache/bind/db.31.172.in-addr.arpa.zone";
+        file "/var/cache/bind/db.1.168.192.in-addr.arpa.zone";
         masters {
               YOUR_DNS_MASTER_IP;
         };
