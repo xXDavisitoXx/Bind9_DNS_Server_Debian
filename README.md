@@ -230,7 +230,7 @@ nano /etc/bind/conf/named.conf.local
 // Do any local configuration here
 //
 
-zone "lan" {
+zone "homelab.guide.org" {
         type master;
         file "/etc/bind/zones/db.homelab.guide.org.zone";
 };
@@ -238,6 +238,12 @@ zone "lan" {
 zone "1.168.192.in-addr.arpa" {
         type master;
         file "/etc/bind/zones/db.192.168.1.in-addr.arpa.zone";
+};
+
+zone "rpz.telemetry" {
+    type master;
+    file "/etc/bind/zones/db.rpz.zone";
+    allow-query { none; };
 };
 ```
 
@@ -511,7 +517,7 @@ OK
 
 Create RPZ:
 ```bash
-nano /etc/bind/zones/db.rpz.telemetry.zone
+nano /etc/bind/zones/db.rpz.zone
 ```
 
 ```bash
