@@ -792,7 +792,30 @@ zone "rpz.telemetry" {
         };
 };
 ```
+### Check the config is correct
+```bash
+sudo named-checkconf
+```
+✔️ If it returns nothing, everything is correct
 
+Test the service
+```bash
+sudo systemctl restart bind9
+```
+```bash
+sudo systemctl status bind9
+```
+:x: If the service fails, execute the following to see where the error lies
+```bash
+sudo journalctl -u named.service -n 40 --no-pager
+```
+and start again
+```bash
+sudo systemctl start bind9
+```
+```bash
+sudo systemctl status bind9
+```
 Test rpz from DNS server: 
 
 External resolution:
