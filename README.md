@@ -1,7 +1,7 @@
 # Bind9_DNS_Server_Debian
 
 <p align="center">
-  <img src="./Images/Repo/Esquema-DNS.jpeg" alt="Bind9-Esquema-DNS" width="100%">
+  <img src="./Images/Repo/Esquema-DNS.jpg" alt="Bind9-Esquema-DNS" width="100%">
 </p>
 
 ### Install software
