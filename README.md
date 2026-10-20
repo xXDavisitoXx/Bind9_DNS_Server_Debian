@@ -102,6 +102,17 @@ It must be in this path to work; otherwise, we have to modify the service
 ```bash
  ln -s /etc/bind/conf/named.conf /etc/bind/
 ```
+:white_check_mark: Up to this point, both DNS Masters and DNS Slaves are created in the same way
+
+We can clone this machine twice and create the slaves by regenerating them.
+To regenerate the Debian system:
+[Regenerate Debian 13 Machine](https://github.com/xXDavisitoXx/Regenerate_Debian13_Machine)
+
+Once the system has been generated, we regenerate the bind key.
+```bash
+rndc-confgen -a -c /etc/bind/keys/rndc.key
+```
+
 ## Master DNS
 Functions:
 * Zone Management (SOA): Serves as the primary authority responsible for creating, editing, and managing zone records (such as the SOA record)[cite: 3].
@@ -687,6 +698,15 @@ named-checkzone rpz.telemetry /etc/bind/zones/db.rpz.zone
 zone rpz.telemetry/IN: loaded serial 2026060502
 OK
 ```
+
+##  DNS SLAVES
+
+* Direct Client Resolution: Acts as the primary resolvers for LAN clients, handling and answering all direct DNS queries from end-user devices.
+* Secondary Zone Copy (Slave): Maintains synchronized read-only copies of the master zone files received via zone transfers (AXFR/IXFR).
+* Load Balancing & Redistribution: Distributes query traffic across the LAN to improve performance, reliability, and fault tolerance.
+* Local Policy Enforcement (RPZ): Applies response-policy rules (such as blocking telemetry or malicious domains) locally to all client requests.
+* High Availability (HA): Ensures continuous DNS resolution for the network even if the primary master server experiences downtime.
+
 
 Test rpz from DNS server: 
 
